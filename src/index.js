@@ -1,3 +1,10 @@
-export function robn(no) {
-  return 2;
+export class Ship {
+  constructor(length) {
+    this.length = length;
+    this.hitCount = 0;
+  }
+
+  hit() {
+    this.hitCount++;
+  }
 }
