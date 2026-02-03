@@ -7,4 +7,7 @@ export class Ship {
   hit() {
     this.hitCount++;
   }
+  get isSunk() {
+    return this.hitCount >= this.length;
+  }
 }
