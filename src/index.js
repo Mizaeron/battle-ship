@@ -1,5 +1,3 @@
-function robn() {
-  let a = 2;
-  let;
-  console.log(ds);
+export function robn(no) {
+  return 2;
 }
