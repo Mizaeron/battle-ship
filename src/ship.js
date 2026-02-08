@@ -5,6 +5,10 @@ export class Ship {
     this.coords = coords;
   }
 
+  assignCoords(H, V) {
+    this.coords.push([H, V]);
+  }
+
   hit() {
     this.hitCount++;
   }
