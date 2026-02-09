@@ -1,6 +1,9 @@
 import { Ship } from "./ship";
 import { Gameboard } from "./gameboard";
 
+afterEach(() => {
+  Gameboard.reset();
+});
 test("hit() icrements hitCount", () => {
   const ship = new Ship(3);
   expect(ship.hitCount).toBe(0);
@@ -57,39 +60,14 @@ test("Create a ship and assign coords", () => {
   ]);
 });
 
-// test("Place ship on the board", () => {
-//   const board = new Gameboard();
-//   board.placeShip(2);
-//   expect(Gameboard.board.get(ship.coords[0][0])[ship.coords[0][1]]).toEqual(
-//     "X",
-//   );
-// const ship2 = new Ship(4);
-// ship2.assignCoords("B", 3);
-// ship2.assignCoords("B", 4);
-// ship2.assignCoords("B", 5);
-// ship2.assignCoords("B", 6);
-
-// board.placeShip(ship2);
-// expect(Gameboard.board.get(ship2.coords[0][0])[ship2.coords[0][1]]).toEqual(
-//   "X",
-// );
-// expect(Gameboard.board.get(ship2.coords[1][0])[ship2.coords[1][1]]).toEqual(
-//   "X",
-// );
-// expect(Gameboard.board.get(ship2.coords[2][0])[ship2.coords[2][1]]).toEqual(
-//   "X",
-// );
-// expect(Gameboard.board.get(ship2.coords[3][0])[ship2.coords[3][1]]).toEqual(
-//   "X",
-// );
-// });
-
-// test("Get the correct ship on the board", () => {
-//   const board = new Gameboard();
-//   const ship1 = new Ship(2);
-//   ship1.assignCoords("A", 2);
-//   ship1.assignCoords("A", 3);
-//   board.placeShip(ship1);
-//   console.log(board.placeShip(ship1));
-//   expect(board.receiveAttack("A", 2)).toEqual(ship1);
-// });
+test("Place stored ship on the board", () => {
+  const board = new Gameboard();
+  board.createShip(3);
+  board.storedShip.assignCoords("A", 3);
+  board.storedShip.assignCoords("A", 4);
+  board.storedShip.assignCoords("A", 5);
+  board.placeShip(board.storedShip);
+  expect(Gameboard.board.get("A")[3]).toEqual("X");
+  expect(Gameboard.board.get("A")[4]).toEqual("X");
+  expect(Gameboard.board.get("A")[5]).toEqual("X");
+});
