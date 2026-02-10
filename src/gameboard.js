@@ -1,27 +1,17 @@
 import { Ship } from "./ship.js";
 
-export class Gameboard {
+export class newBoard {
   constructor() {
     this.storedShip = null;
     this.shipMap = [];
-  }
-  static rowLetters = "ABCDEFGHIJ".split("");
-
-  static board = new Map(
-    Gameboard.rowLetters.map((l) => [
-      l,
-      Array.from({ length: 10 }, () => null),
-    ]),
-  );
-  static reset() {
-    //for Jest testing
     this.board = new Map(
-      Gameboard.rowLetters.map((l) => [
+      newBoard.rowLetters.map((l) => [
         l,
         Array.from({ length: 10 }, () => null),
       ]),
     );
   }
+  static rowLetters = "ABCDEFGHIJ".split("");
 
   createShip(length) {
     const ship = new Ship(length);
@@ -30,25 +20,25 @@ export class Gameboard {
     return this.storedShip;
   }
 
-  placeShip(ship) {
+  placeShip(newBoard, ship) {
     switch (ship.length) {
       case 1:
-        Gameboard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
+        newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
         break;
       case 2:
-        Gameboard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
-        Gameboard.board.get(ship.coords[1][0])[ship.coords[1][1]] = "X";
+        newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
+        newBoard.board.get(ship.coords[1][0])[ship.coords[1][1]] = "X";
         break;
       case 3:
-        Gameboard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
-        Gameboard.board.get(ship.coords[1][0])[ship.coords[1][1]] = "X";
-        Gameboard.board.get(ship.coords[2][0])[ship.coords[2][1]] = "X";
+        newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
+        newBoard.board.get(ship.coords[1][0])[ship.coords[1][1]] = "X";
+        newBoard.board.get(ship.coords[2][0])[ship.coords[2][1]] = "X";
         break;
       case 4:
-        Gameboard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
-        Gameboard.board.get(ship.coords[1][0])[ship.coords[1][1]] = "X";
-        Gameboard.board.get(ship.coords[2][0])[ship.coords[2][1]] = "X";
-        Gameboard.board.get(ship.coords[3][0])[ship.coords[3][1]] = "X";
+        newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
+        newBoard.board.get(ship.coords[1][0])[ship.coords[1][1]] = "X";
+        newBoard.board.get(ship.coords[2][0])[ship.coords[2][1]] = "X";
+        newBoard.board.get(ship.coords[3][0])[ship.coords[3][1]] = "X";
         break;
     }
   }
@@ -57,7 +47,9 @@ export class Gameboard {
 export function checkExistingShipMap(board, coordToCheck) {
   for (const ship of board.shipMap) {
     for (const [H, V] of ship.coords) {
-      if (H === coordToCheck[0] && V === coordToCheck[1]) return true;
+      if (H === coordToCheck[0] && V === coordToCheck[1]) {
+        return true;
+      }
     }
   }
   return false;

@@ -1,4 +1,4 @@
-import { checkExistingShipMap, Gameboard } from "./gameboard.js";
+import { checkExistingShipMap, newBoard } from "./gameboard.js";
 
 export class Ship {
   constructor(length, coords = []) {
