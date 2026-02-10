@@ -1,11 +1,11 @@
 import { Ship } from "./ship.js";
 
-export class newBoard {
+export class Gameboard {
   constructor() {
     this.storedShip = null;
     this.shipMap = [];
     this.board = new Map(
-      newBoard.rowLetters.map((l) => [
+      Gameboard.rowLetters.map((l) => [
         l,
         Array.from({ length: 10 }, () => null),
       ]),
@@ -16,7 +16,6 @@ export class newBoard {
   createShip(length) {
     const ship = new Ship(length);
     this.storedShip = ship;
-    this.shipMap.push(this.storedShip);
     return this.storedShip;
   }
 

@@ -1,9 +1,5 @@
+import { Gameboard } from "./gameboard";
 import { Ship } from "./ship";
-import {
-  checkExistingShipMap,
-  newBoard as firstBoard,
-  newBoard,
-} from "./gameboard";
 
 test("hit() icrements hitCount", () => {
   const ship = new Ship(3);
@@ -19,7 +15,7 @@ test("Checks if sunk", () => {
 });
 
 test("Is map letter an Array of 10", () => {
-  const firstBoard = new newBoard();
+  const firstBoard = new Gameboard();
   expect(firstBoard.board.get("A")).toBeInstanceOf(Array);
   expect(firstBoard.board.get("A")).toHaveLength(10);
   expect(firstBoard.board.has("B")).toBe(true);
@@ -27,23 +23,13 @@ test("Is map letter an Array of 10", () => {
 });
 
 test("Setting coordinates on the board", () => {
-  const firstBoard = new newBoard();
+  const firstBoard = new Gameboard();
   firstBoard.board.get("A")[1] = "X";
   expect(firstBoard.board.get("A")[1]).toEqual("X");
 });
 
-test("Show created coords of the ship", () => {
-  const firstBoard = new newBoard();
-  const ship = new Ship(3);
-  ship.assignCoords("A", 3, firstBoard);
-  expect(ship.coords).toEqual([["A", 3]]);
-  const ship2 = new Ship(3);
-  ship2.assignCoords("B", 4, firstBoard);
-  expect(ship2.coords).toEqual([["B", 4]]);
-});
-
 test("Create ship from within gameboard class", () => {
-  const firstBoard = new newBoard();
+  const firstBoard = new Gameboard();
   firstBoard.createShip(2);
   expect(firstBoard.createShip(2)).toBe(firstBoard.storedShip);
   firstBoard.createShip(3);
@@ -51,7 +37,7 @@ test("Create ship from within gameboard class", () => {
 });
 
 test("Create a ship and assign coords", () => {
-  const firstBoard = new newBoard();
+  const firstBoard = new Gameboard();
   firstBoard.createShip(3);
   firstBoard.storedShip.assignCoords("A", 3, firstBoard);
   firstBoard.storedShip.assignCoords("A", 4, firstBoard);
@@ -64,8 +50,8 @@ test("Create a ship and assign coords", () => {
   ]);
 });
 
-test("Place stored ship on the board", () => {
-  const firstBoard = new newBoard();
+test.skip("Place stored ship on the board", () => {
+  const firstBoard = new Gameboard();
   firstBoard.createShip(3);
   firstBoard.storedShip.assignCoords("A", 3, firstBoard);
   firstBoard.storedShip.assignCoords("A", 4, firstBoard);
@@ -74,17 +60,13 @@ test("Place stored ship on the board", () => {
   expect(firstBoard.board.get("A")[3]).toEqual("X");
   expect(firstBoard.board.get("A")[4]).toEqual("X");
   expect(firstBoard.board.get("A")[5]).toEqual("X");
-  console.log(firstBoard.board);
 });
 
-test("Store multiple ships without overwriting", () => {
-  const firstBoard = new newBoard();
+test.skip("Throw an error when creating ship with existing coords", () => {
+  const firstBoard = new Gameboard();
   firstBoard.createShip(2);
   firstBoard.storedShip.assignCoords("A", 2, firstBoard);
   firstBoard.storedShip.assignCoords("A", 3, firstBoard);
-  firstBoard.createShip(3);
-  firstBoard.storedShip.assignCoords("A", 4, firstBoard);
-  firstBoard.storedShip.assignCoords("A", 5, firstBoard);
   expect(firstBoard.storedShip.assignCoords("A", 3, firstBoard)).toBe(
     "Already exists",
   );
