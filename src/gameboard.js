@@ -3,8 +3,10 @@ import { Ship } from "./ship.js";
 export class Gameboard {
   constructor() {
     this.storedShip = null;
+    this.shipMap = [];
   }
   static rowLetters = "ABCDEFGHIJ".split("");
+
   static board = new Map(
     Gameboard.rowLetters.map((l) => [
       l,
@@ -24,6 +26,7 @@ export class Gameboard {
   createShip(length) {
     const ship = new Ship(length);
     this.storedShip = ship;
+    this.shipMap.push(this.storedShip);
     return this.storedShip;
   }
 
@@ -49,4 +52,13 @@ export class Gameboard {
         break;
     }
   }
+}
+
+export function checkExistingShipMap(board, coordToCheck) {
+  for (const ship of board.shipMap) {
+    for (const [H, V] of ship.coords) {
+      if (H === coordToCheck[0] && V === coordToCheck[1]) return true;
+    }
+  }
+  return false;
 }
