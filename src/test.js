@@ -61,12 +61,27 @@ test("Place stored ship on the board", () => {
   expect(firstBoard.board.get("A")[5]).toEqual("X");
 });
 
-test.skip("Throw an error when creating ship with existing coords", () => {
+test("Throw an error when creating ship with existing coords", () => {
   const firstBoard = new Gameboard();
   firstBoard.createShip(2);
   firstBoard.storedShip.assignCoords("A", 2, firstBoard);
   firstBoard.storedShip.assignCoords("A", 3, firstBoard);
-  expect(firstBoard.storedShip.assignCoords("A", 3, firstBoard)).toBe(
-    "Already exists",
+  expect(() => firstBoard.storedShip.assignCoords("A", 3, firstBoard)).toThrow(
+    "Can't assign existing coords",
+  );
+});
+
+test("Determine whether attack hit the ship", () => {
+  const firstBoard = new Gameboard();
+  firstBoard.createShip(3);
+  firstBoard.storedShip.assignCoords("A", 3, firstBoard);
+  firstBoard.storedShip.assignCoords("A", 4, firstBoard);
+  firstBoard.storedShip.assignCoords("A", 5, firstBoard);
+  firstBoard.createShip(2);
+  firstBoard.storedShip.assignCoords("A", 7, firstBoard);
+  firstBoard.storedShip.assignCoords("A", 8, firstBoard);
+  // firstBoard.receiveAttack(["A", 7], firstBoard);
+  expect(firstBoard.receiveAttack(["A", 3], firstBoard)).toEqual(
+    firstBoard.shipMap[0],
   );
 });

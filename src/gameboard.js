@@ -41,6 +41,14 @@ export class Gameboard {
         break;
     }
   }
+
+  receiveAttack(coords, board) {
+    for (const ship of board.shipMap) {
+      for (const [H, V] of ship.coords) {
+        if (H === coords[0] && V === coords[1]) return ship;
+      }
+    }
+  }
 }
 
 export function checkExistingShipMap(board, coordToCheck) {
