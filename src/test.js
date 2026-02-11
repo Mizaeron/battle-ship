@@ -1,3 +1,4 @@
+import { experiments } from "webpack";
 import { Gameboard } from "./gameboard";
 import { Ship } from "./ship";
 
@@ -84,4 +85,5 @@ test("Determine whether attack hit the ship", () => {
   expect(firstBoard.receiveAttack(["A", 3], firstBoard)).toEqual(
     firstBoard.shipMap[0],
   );
+  expect(firstBoard.shipMap[0].hitCount).toEqual(1);
 });

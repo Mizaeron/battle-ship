@@ -45,7 +45,11 @@ export class Gameboard {
   receiveAttack(coords, board) {
     for (const ship of board.shipMap) {
       for (const [H, V] of ship.coords) {
-        if (H === coords[0] && V === coords[1]) return ship;
+        if (H === coords[0] && V === coords[1]) {
+          ship.hitCount++;
+          // ship.coords.splice([H, V], 1);
+          return ship;
+        }
       }
     }
   }
