@@ -50,7 +50,7 @@ test("Create a ship and assign coords", () => {
   ]);
 });
 
-test.skip("Place stored ship on the board", () => {
+test("Place stored ship on the board", () => {
   const firstBoard = new Gameboard();
   firstBoard.createShip(3);
   firstBoard.storedShip.assignCoords("A", 3, firstBoard);

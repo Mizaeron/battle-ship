@@ -1,4 +1,4 @@
-import { checkExistingShipMap, newBoard } from "./gameboard.js";
+import { checkExistingShipMap } from "./gameboard.js";
 
 export class Ship {
   constructor(length, coords = []) {
@@ -8,16 +8,12 @@ export class Ship {
   }
 
   assignCoords(H, V, board) {
-    let i = 0;
     if (checkExistingShipMap(board, [H, V])) return "Already exists";
-    while (i < board.storedShip.length) {
-      i++;
-      console.log(i);
-    }
 
     this.coords.push([H, V]);
 
-    board.shipMap.push(board.storedShip);
+    if (board.storedShip.length === board.storedShip.coords.length)
+      board.shipMap.push(board.storedShip);
   }
 
   hit() {

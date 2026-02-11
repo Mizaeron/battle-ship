@@ -1,1 +1,1 @@
-import { newBoard } from "./gameboard.js";
+import { Gameboard } from "./gameboard.js";
