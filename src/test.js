@@ -56,7 +56,6 @@ test("Place stored ship on the board", () => {
   firstBoard.storedShip.assignCoords("A", 3, firstBoard);
   firstBoard.storedShip.assignCoords("A", 4, firstBoard);
   firstBoard.storedShip.assignCoords("A", 5, firstBoard);
-  firstBoard.placeShip(firstBoard, firstBoard.storedShip);
   expect(firstBoard.board.get("A")[3]).toEqual("X");
   expect(firstBoard.board.get("A")[4]).toEqual("X");
   expect(firstBoard.board.get("A")[5]).toEqual("X");

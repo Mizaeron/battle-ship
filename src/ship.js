@@ -12,8 +12,10 @@ export class Ship {
 
     this.coords.push([H, V]);
 
-    if (board.storedShip.length === board.storedShip.coords.length)
+    if (board.storedShip.length === board.storedShip.coords.length) {
       board.shipMap.push(board.storedShip);
+      board.placeShip(board, board.storedShip);
+    }
   }
 
   hit() {
