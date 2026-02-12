@@ -1,6 +1,7 @@
 import { experiments } from "webpack";
 import { Gameboard } from "./gameboard";
 import { Ship } from "./ship";
+import { Player } from "./player";
 
 test("hit() icrements hitCount", () => {
   const ship = new Ship(3);
@@ -117,4 +118,14 @@ test("Report if all ships are sunk", () => {
   firstBoard.receiveAttack(["C", 5], firstBoard);
 
   expect(firstBoard.areAllShipSunk(firstBoard.shipMap)).toBe(true);
+});
+
+test("Creater human player board & computer player", () => {
+  const playerHuman = new Player();
+  const playerBoard = playerHuman.createHuman();
+  const playerComputer = new Player();
+  const computerBoard = playerComputer.createComputer();
+
+  expect(playerBoard.createShip(3).length).toEqual(3);
+  expect(computerBoard.createShip(2).length).toEqual(2);
 });

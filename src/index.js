@@ -1,1 +1,1 @@
-import { Gameboard } from "./gameboard.js";
+import { playerHuman } from "./dom.js";
