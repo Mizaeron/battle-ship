@@ -55,6 +55,9 @@ export class Gameboard {
     }
     return (board.board.get(H)[V] = "Miss");
   }
+  areAllShipSunk(shipmap) {
+    return shipmap.every((ship) => ship.isSunk === true);
+  }
 }
 
 export function checkExistingShipMap(board, coordToCheck) {

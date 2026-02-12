@@ -96,5 +96,25 @@ test("Check given coordinates to record a missed shot", () => {
   firstBoard.storedShip.assignCoords("A", 5, firstBoard);
   expect(firstBoard.receiveAttack(["A", 7], firstBoard)).toEqual("Miss");
   expect(firstBoard.board.get("A")[7]).toEqual("Miss");
-  console.log(firstBoard.board.get("A"));
+});
+
+test("Report if all ships are sunk", () => {
+  const firstBoard = new Gameboard();
+  firstBoard.createShip(3);
+  firstBoard.storedShip.assignCoords("A", 3, firstBoard);
+  firstBoard.storedShip.assignCoords("A", 4, firstBoard);
+  firstBoard.storedShip.assignCoords("A", 5, firstBoard);
+  firstBoard.receiveAttack(["A", 3], firstBoard);
+  firstBoard.receiveAttack(["A", 4], firstBoard);
+  firstBoard.receiveAttack(["A", 5], firstBoard);
+
+  firstBoard.createShip(3);
+  firstBoard.storedShip.assignCoords("C", 3, firstBoard);
+  firstBoard.storedShip.assignCoords("C", 4, firstBoard);
+  firstBoard.storedShip.assignCoords("C", 5, firstBoard);
+  firstBoard.receiveAttack(["C", 3], firstBoard);
+  firstBoard.receiveAttack(["C", 4], firstBoard);
+  firstBoard.receiveAttack(["C", 5], firstBoard);
+
+  expect(firstBoard.areAllShipSunk(firstBoard.shipMap)).toBe(true);
 });
