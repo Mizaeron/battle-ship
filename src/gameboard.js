@@ -43,6 +43,7 @@ export class Gameboard {
   }
 
   receiveAttack(coords, board) {
+    const [H, V] = coords;
     for (const ship of board.shipMap) {
       for (const [H, V] of ship.coords) {
         if (H === coords[0] && V === coords[1]) {
@@ -52,6 +53,7 @@ export class Gameboard {
         }
       }
     }
+    return (board.board.get(H)[V] = "Miss");
   }
 }
 

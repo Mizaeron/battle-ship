@@ -87,3 +87,14 @@ test("Determine whether attack hit the ship", () => {
   );
   expect(firstBoard.shipMap[0].hitCount).toEqual(1);
 });
+
+test("Check given coordinates to record a missed shot", () => {
+  const firstBoard = new Gameboard();
+  firstBoard.createShip(3);
+  firstBoard.storedShip.assignCoords("A", 3, firstBoard);
+  firstBoard.storedShip.assignCoords("A", 4, firstBoard);
+  firstBoard.storedShip.assignCoords("A", 5, firstBoard);
+  expect(firstBoard.receiveAttack(["A", 7], firstBoard)).toEqual("Miss");
+  expect(firstBoard.board.get("A")[7]).toEqual("Miss");
+  console.log(firstBoard.board.get("A"));
+});
