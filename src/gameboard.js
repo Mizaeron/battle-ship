@@ -23,28 +23,11 @@ export class Gameboard {
   placeShip(newBoard, ship) {
     const map = newBoard.board;
     const index = Gameboard.rowLetters.indexOf(ship.coords[0][0]);
-    switch (ship.length) {
-      case 1:
-        newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
-        break;
-      case 2:
-        newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
-        newBoard.board.get(ship.coords[1][0])[ship.coords[1][1]] = "X";
-        break;
-      case 3:
-        newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
-        newBoard.board.get(ship.coords[1][0])[ship.coords[1][1]] = "X";
-        newBoard.board.get(ship.coords[2][0])[ship.coords[2][1]] = "X";
-        break;
-      case 4:
-        newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
-        newBoard.board.get(ship.coords[1][0])[ship.coords[1][1]] = "X";
-        newBoard.board.get(ship.coords[2][0])[ship.coords[2][1]] = "X";
-        newBoard.board.get(ship.coords[3][0])[ship.coords[3][1]] = "X";
-        break;
+    for (const k of ship.coords) {
+      const index = Gameboard.rowLetters.indexOf(k[0]);
+      newBoard.board.get(k[0])[k[1]] = "X";
+      console.log(index);
     }
-
-    console.log(index);
   }
 
   receiveAttack(coords, board) {
