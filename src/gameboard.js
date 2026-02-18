@@ -12,6 +12,7 @@ export class Gameboard {
     );
   }
   static rowLetters = "ABCDEFGHIJ".split("");
+  // index = new Map(Gameboard.rowLetters.map((l, b) => [l, b]));
 
   createShip(length) {
     const ship = new Ship(length);
@@ -20,6 +21,8 @@ export class Gameboard {
   }
 
   placeShip(newBoard, ship) {
+    const map = newBoard.board;
+    const index = Gameboard.rowLetters.indexOf(ship.coords[0][0]);
     switch (ship.length) {
       case 1:
         newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
@@ -40,6 +43,8 @@ export class Gameboard {
         newBoard.board.get(ship.coords[3][0])[ship.coords[3][1]] = "X";
         break;
     }
+
+    console.log(index);
   }
 
   receiveAttack(coords, board) {
@@ -70,3 +75,5 @@ export function checkExistingShipMap(board, coordToCheck) {
   }
   return false;
 }
+
+// export function assignRadius (board)

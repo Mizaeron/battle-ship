@@ -10,6 +10,7 @@ export class Ship {
   assignCoords(H, V, board) {
     if (checkExistingShipMap(board, [H, V])) {
       throw new Error("Can't assign existing coords");
+      return H;
     }
 
     this.coords.push([H, V]);
