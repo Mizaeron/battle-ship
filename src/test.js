@@ -137,6 +137,8 @@ test("Create a radius of 1 around placed ship", () => {
   firstBoard.storedShip.assignCoords("C", 5, firstBoard);
   // console.log(firstBoard.storedShip);
   console.log(firstBoard.board.get("C"));
+  console.log(firstBoard.board.get("B"));
+  console.log(firstBoard.board.get("D"));
 
   expect(firstBoard.board.get("B")[2]).toEqual("C");
   expect(firstBoard.board.get("D")[4]).toEqual("C");

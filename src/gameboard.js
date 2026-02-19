@@ -12,7 +12,7 @@ export class Gameboard {
     );
   }
   static rowLetters = "ABCDEFGHIJ".split("");
-  // index = new Map(Gameboard.rowLetters.map((l, b) => [l, b]));
+  // letterToIndex = new Map(Gameboard.rowLetters.map((l, b) => [l, b]));
 
   createShip(length) {
     const ship = new Ship(length);
@@ -22,11 +22,13 @@ export class Gameboard {
 
   placeShip(newBoard, ship) {
     const map = newBoard.board;
-    const index = Gameboard.rowLetters.indexOf(ship.coords[0][0]);
     for (const k of ship.coords) {
       const index = Gameboard.rowLetters.indexOf(k[0]);
-      newBoard.board.get(k[0])[k[1]] = "X";
-      console.log(index);
+      const letterBefore = Gameboard.rowLetters[index - 1];
+      const letterAfter = Gameboard.rowLetters[index + 1];
+      map.get(k[0])[k[1]] = "X";
+      map.get(letterBefore)[k[1]] = "C";
+      map.get(letterAfter)[k[1]] = "C";
     }
   }
 
