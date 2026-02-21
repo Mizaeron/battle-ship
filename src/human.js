@@ -35,5 +35,5 @@ export function playerHuman() {
   playerBoard.createShip(1);
   playerBoard.storedShip.assignCoords("C", 2, playerBoard);
 
-  console.log(playerBoard);
+  return playerBoard;
 }
