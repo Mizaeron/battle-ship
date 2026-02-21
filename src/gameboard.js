@@ -27,8 +27,19 @@ export class Gameboard {
       const letterBefore = Gameboard.rowLetters[index - 1];
       const letterAfter = Gameboard.rowLetters[index + 1];
       map.get(k[0])[k[1]] = "X";
+      if (map.get(k[0])[k[1] - 1] === null) map.get(k[0])[k[1] - 1] = "C";
+      if (map.get(k[0])[k[1] + 1] === null) map.get(k[0])[k[1] + 1] = "C";
+
       map.get(letterBefore)[k[1]] = "C";
+      if (map.get(letterBefore)[k[1] - 1] === null)
+        map.get(letterBefore)[k[1] - 1] = "C";
+      if (map.get(letterBefore)[k[1] + 1] === null)
+        map.get(letterBefore)[k[1] + 1] = "C";
       map.get(letterAfter)[k[1]] = "C";
+      if (map.get(letterAfter)[k[1] - 1] === null)
+        map.get(letterAfter)[k[1] - 1] = "C";
+      if (map.get(letterAfter)[k[1] + 1] === null)
+        map.get(letterAfter)[k[1] + 1] = "C";
     }
   }
 

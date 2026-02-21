@@ -143,6 +143,7 @@ test("Create a radius of 1 around placed ship", () => {
   expect(firstBoard.board.get("B")[2]).toEqual("C");
   expect(firstBoard.board.get("D")[4]).toEqual("C");
   expect(firstBoard.board.get("C")[6]).toEqual("C");
+  expect(firstBoard.board.get("D")[6]).toEqual("C");
 });
 
 test.skip("Rule: cannot place ship within 1 radius", () => {
