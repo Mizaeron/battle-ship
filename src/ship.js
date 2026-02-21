@@ -1,4 +1,4 @@
-import { checkExistingShipMap } from "./gameboard.js";
+import { checkBoard, checkExistingShipMap } from "./gameboard.js";
 
 export class Ship {
   constructor(length, coords = []) {
@@ -10,8 +10,8 @@ export class Ship {
   assignCoords(H, V, board) {
     if (checkExistingShipMap(board, [H, V])) {
       throw new Error("Can't assign existing coords");
-      return H;
     }
+    if (checkBoard(H, V, board)) return "Can't place";
 
     this.coords.push([H, V]);
 

@@ -12,7 +12,6 @@ export class Gameboard {
     );
   }
   static rowLetters = "ABCDEFGHIJ".split("");
-  // index = new Map(Gameboard.rowLetters.map((l, b) => [l, b]));
 
   createShip(length) {
     const ship = new Ship(length);
@@ -22,29 +21,38 @@ export class Gameboard {
 
   placeShip(newBoard, ship) {
     const map = newBoard.board;
-    const index = Gameboard.rowLetters.indexOf(ship.coords[0][0]);
-    switch (ship.length) {
-      case 1:
-        newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
-        break;
-      case 2:
-        newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
-        newBoard.board.get(ship.coords[1][0])[ship.coords[1][1]] = "X";
-        break;
-      case 3:
-        newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
-        newBoard.board.get(ship.coords[1][0])[ship.coords[1][1]] = "X";
-        newBoard.board.get(ship.coords[2][0])[ship.coords[2][1]] = "X";
-        break;
-      case 4:
-        newBoard.board.get(ship.coords[0][0])[ship.coords[0][1]] = "X";
-        newBoard.board.get(ship.coords[1][0])[ship.coords[1][1]] = "X";
-        newBoard.board.get(ship.coords[2][0])[ship.coords[2][1]] = "X";
-        newBoard.board.get(ship.coords[3][0])[ship.coords[3][1]] = "X";
-        break;
-    }
+    for (const k of ship.coords) {
+      const index = Gameboard.rowLetters.indexOf(k[0]);
+      const letterBefore = Gameboard.rowLetters[index - 1];
+      const letterAfter = Gameboard.rowLetters[index + 1];
+      const row = map.get(k[0]);
+      const rowBefore = map.get(letterBefore);
+      const rowAfter = map.get(letterAfter);
 
-    console.log(index);
+      // helper to safely set if index in bounds and value is null (or absent)
+      function safeSet(target, idx, val) {
+        if (!target) return;
+        if (idx < 0 || idx >= target.length) return;
+        if (target[idx] === null) target[idx] = val;
+      }
+
+      // current cell
+      if (row && k[1] >= 0 && k[1] < row.length) row[k[1]] = "X";
+
+      // same row neighbors
+      safeSet(row, k[1] - 1, "C");
+      safeSet(row, k[1] + 1, "C");
+
+      // previous row neighbors
+      safeSet(rowBefore, k[1], "C");
+      safeSet(rowBefore, k[1] - 1, "C");
+      safeSet(rowBefore, k[1] + 1, "C");
+
+      // next row neighbors
+      safeSet(rowAfter, k[1], "C");
+      safeSet(rowAfter, k[1] - 1, "C");
+      safeSet(rowAfter, k[1] + 1, "C");
+    }
   }
 
   receiveAttack(coords, board) {
@@ -76,4 +84,6 @@ export function checkExistingShipMap(board, coordToCheck) {
   return false;
 }
 
-// export function assignRadius (board)
+export function checkBoard(H, V, board) {
+  if (board.board.get(`${H}`)[V] === "C") return true;
+}
