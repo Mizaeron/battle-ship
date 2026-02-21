@@ -12,7 +12,6 @@ export class Gameboard {
     );
   }
   static rowLetters = "ABCDEFGHIJ".split("");
-  // letterToIndex = new Map(Gameboard.rowLetters.map((l, b) => [l, b]));
 
   createShip(length) {
     const ship = new Ship(length);
@@ -26,20 +25,33 @@ export class Gameboard {
       const index = Gameboard.rowLetters.indexOf(k[0]);
       const letterBefore = Gameboard.rowLetters[index - 1];
       const letterAfter = Gameboard.rowLetters[index + 1];
-      map.get(k[0])[k[1]] = "X";
-      if (map.get(k[0])[k[1] - 1] === null) map.get(k[0])[k[1] - 1] = "C";
-      if (map.get(k[0])[k[1] + 1] === null) map.get(k[0])[k[1] + 1] = "C";
+      const row = map.get(k[0]);
+      const rowBefore = map.get(letterBefore);
+      const rowAfter = map.get(letterAfter);
 
-      map.get(letterBefore)[k[1]] = "C";
-      if (map.get(letterBefore)[k[1] - 1] === null)
-        map.get(letterBefore)[k[1] - 1] = "C";
-      if (map.get(letterBefore)[k[1] + 1] === null)
-        map.get(letterBefore)[k[1] + 1] = "C";
-      map.get(letterAfter)[k[1]] = "C";
-      if (map.get(letterAfter)[k[1] - 1] === null)
-        map.get(letterAfter)[k[1] - 1] = "C";
-      if (map.get(letterAfter)[k[1] + 1] === null)
-        map.get(letterAfter)[k[1] + 1] = "C";
+      // helper to safely set if index in bounds and value is null (or absent)
+      function safeSet(target, idx, val) {
+        if (!target) return;
+        if (idx < 0 || idx >= target.length) return;
+        if (target[idx] === null) target[idx] = val;
+      }
+
+      // current cell
+      if (row && k[1] >= 0 && k[1] < row.length) row[k[1]] = "X";
+
+      // same row neighbors
+      safeSet(row, k[1] - 1, "C");
+      safeSet(row, k[1] + 1, "C");
+
+      // previous row neighbors
+      safeSet(rowBefore, k[1], "C");
+      safeSet(rowBefore, k[1] - 1, "C");
+      safeSet(rowBefore, k[1] + 1, "C");
+
+      // next row neighbors
+      safeSet(rowAfter, k[1], "C");
+      safeSet(rowAfter, k[1] - 1, "C");
+      safeSet(rowAfter, k[1] + 1, "C");
     }
   }
 
@@ -72,4 +84,6 @@ export function checkExistingShipMap(board, coordToCheck) {
   return false;
 }
 
-// export function assignRadius (board)
+export function checkBoard(H, V, board) {
+  if (board.board.get(`${H}`)[V] === "C") return true;
+}
