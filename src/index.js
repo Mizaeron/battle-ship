@@ -1,3 +1,3 @@
-// import { game } from "./dom.js";
+import { game } from "./dom.js";
 
-// game();
+game();
