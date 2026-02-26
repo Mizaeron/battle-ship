@@ -6,9 +6,9 @@ import { playerComputer } from "./computer.js";
 
 export function game() {}
 
+const COL_LETTERS = "ABCDEFGHIJ";
+
 const playerBoard = playerHuman();
-console.log(playerBoard);
-// playerComputer();
 
 function renderPlayer() {
   const grid = document.querySelector(".player-board");
@@ -30,3 +30,34 @@ function renderPlayer() {
 }
 
 renderPlayer();
+
+function colIndexToLetter(colIndex) {
+  return COL_LETTERS[colIndex] ?? null;
+}
+
+function letterToColIndex(letter) {
+  return COL_LETTERS.indexOf(letter.toUpperCase());
+}
+
+function rowIndexToDisplay(rowIndex) {
+  return rowIndex;
+}
+
+function getCol(index) {
+  return playerBoard.board.get(colIndexToLetter(index));
+}
+
+function displayBoard() {
+  const grid = document.querySelectorAll(".cell");
+
+  grid.forEach((cell) => {
+    cell.textContent = getCol(cell.dataset.row)[cell.dataset.col];
+    if (cell.textContent === "C") cell.textContent = "";
+    if (cell.textContent === "X") {
+      cell.textContent = "";
+      cell.style.backgroundColor = "oklch(60.9% 0.126 221.723)";
+    }
+  });
+}
+
+displayBoard();
