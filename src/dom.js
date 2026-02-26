@@ -9,6 +9,7 @@ export function game() {}
 const COL_LETTERS = "ABCDEFGHIJ";
 
 const playerBoard = playerHuman();
+const computerBoard = playerComputer();
 
 function renderPlayer() {
   const grid = document.querySelector(".player-board");
@@ -29,7 +30,27 @@ function renderPlayer() {
   }
 }
 
+function renderComputer() {
+  const grid = document.querySelector(".computer-board");
+
+  for (let r = 0; r < 10; r++) {
+    const rl = document.createElement("div");
+    rl.className = "label";
+    rl.textContent = r;
+    grid.appendChild(rl);
+
+    for (let c = 0; c < 10; c++) {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      cell.dataset.row = r;
+      cell.dataset.col = c;
+      grid.appendChild(cell);
+    }
+  }
+}
+
 renderPlayer();
+renderComputer();
 
 function colIndexToLetter(colIndex) {
   return COL_LETTERS[colIndex] ?? null;

@@ -17,7 +17,13 @@ body {
   background-color: aquamarine;
 }
 
-.player-board {
+.game-container {
+  display: flex;
+  gap: 100px;
+}
+
+.player-board,
+.computer-board {
   display: grid;
   grid-template-columns: repeat(11, 40px);
   grid-template-rows: repeat(11, 40px);
