@@ -34,5 +34,6 @@ export function playerComputer() {
   computerBoard.storedShip.assignCoords("F", 6, computerBoard);
   computerBoard.createShip(1);
   computerBoard.storedShip.assignCoords("B", 9, computerBoard);
-  console.log(computerBoard);
+
+  return computerBoard;
 }

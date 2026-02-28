@@ -41,12 +41,22 @@ function renderComputer() {
 
     for (let c = 0; c < 10; c++) {
       const cell = document.createElement("div");
-      cell.className = "cell";
+      cell.className = "cell2";
       cell.dataset.row = r;
       cell.dataset.col = c;
       grid.appendChild(cell);
     }
   }
+
+  grid.addEventListener("click", (e) => {
+    if (e.target.className == "cell2") {
+      const column = colIndexToLetter(e.target.dataset.col);
+      const row = Number(e.target.dataset.row);
+
+      console.log(computerBoard.receiveAttack([column, row], computerBoard));
+      console.log(computerBoard.board);
+    }
+  });
 }
 
 renderPlayer();
@@ -64,15 +74,18 @@ function rowIndexToDisplay(rowIndex) {
   return rowIndex;
 }
 
-function getCol(index) {
+function getPlayerMap(index) {
   return playerBoard.board.get(colIndexToLetter(index));
 }
+function getComputerMap(index) {
+  return computerBoard.board.get(colIndexToLetter(index));
+}
 
-function displayBoard() {
+function displayPlayerBoard() {
   const grid = document.querySelectorAll(".cell");
 
   grid.forEach((cell) => {
-    cell.textContent = getCol(cell.dataset.row)[cell.dataset.col];
+    cell.textContent = getPlayerMap(cell.dataset.col)[cell.dataset.row];
     if (cell.textContent === "C") cell.textContent = "";
     if (cell.textContent === "X") {
       cell.textContent = "";
@@ -81,4 +94,18 @@ function displayBoard() {
   });
 }
 
-displayBoard();
+function displayComputerBoard() {
+  const grid = document.querySelectorAll(".cell2");
+
+  grid.forEach((cell) => {
+    cell.textContent = getComputerMap(cell.dataset.col)[cell.dataset.row];
+    if (cell.textContent === "C") cell.textContent = "";
+    if (cell.textContent === "X") {
+      cell.textContent = "";
+      cell.style.backgroundColor = "oklch(60.9% 0.126 221.723)";
+    }
+  });
+}
+
+displayPlayerBoard();
+displayComputerBoard();

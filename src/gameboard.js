@@ -62,6 +62,7 @@ export class Gameboard {
         if (H === coords[0] && V === coords[1]) {
           ship.hitCount++;
           // ship.coords.splice([H, V], 1);
+          board.board.get(H)[V] = "Hit";
           return ship;
         }
       }
