@@ -3,6 +3,8 @@ import { Gameboard } from "./gameboard.js";
 import { Ship } from "./ship.js";
 import { playerHuman } from "./human.js";
 import { playerComputer } from "./computer.js";
+import cross from "./images/close.png";
+import dotimage from "./images/dot.png";
 
 export function game() {}
 
@@ -49,12 +51,27 @@ function renderComputer() {
   }
 
   grid.addEventListener("click", (e) => {
+    const x = document.createElement("img");
+    x.src = cross;
+    const dot = document.createElement("img");
+    dot.src = dotimage;
+
     if (e.target.className == "cell2") {
       const column = colIndexToLetter(e.target.dataset.col);
       const row = Number(e.target.dataset.row);
 
-      console.log(computerBoard.receiveAttack([column, row], computerBoard));
-      console.log(computerBoard.board);
+      const ship = computerBoard.receiveAttack([column, row], computerBoard);
+      if (computerBoard.board.get(column)[row] === "Hit") {
+        x.className = "cross";
+        e.target.append(x);
+        if (ship.isSunk) {
+          console.log(ship.coords);
+        }
+      } else if (computerBoard.board.get(column)[row] === "Miss") {
+        dot.className = "dot";
+        dot.style.backgroundColor = "#ccc";
+        e.target.append(dot);
+      }
     }
   });
 }

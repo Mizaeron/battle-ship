@@ -77,3 +77,8 @@ body {
   background: transparent;
   border: none;
 }
+
+.cross,
+.dot {
+  max-width: 38px;
+}
