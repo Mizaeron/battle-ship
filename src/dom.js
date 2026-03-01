@@ -64,9 +64,7 @@ function renderComputer() {
       if (computerBoard.board.get(column)[row] === "Hit") {
         x.className = "cross";
         e.target.append(x);
-        if (ship.isSunk) {
-          console.log(ship.coords);
-        }
+        if (ship.isSunk) sunkRadius(ship);
       } else if (computerBoard.board.get(column)[row] === "Miss") {
         dot.className = "dot";
         dot.style.backgroundColor = "#ccc";
@@ -96,6 +94,35 @@ function getPlayerMap(index) {
 }
 function getComputerMap(index) {
   return computerBoard.board.get(colIndexToLetter(index));
+}
+
+function sunkRadius(ship) {
+  for (const k of ship.coords) {
+    const column = letterToColIndex(k[0]);
+    const rowNumber = k[1];
+
+    function set(col, row) {
+      if (col < 0) return;
+      const cell = document.querySelector(
+        `.cell2[data-col="${col}"][data-row="${row}"]`,
+      );
+      const boardCell = computerBoard.board.get(colIndexToLetter(col))[row];
+      if (boardCell === "C" && !cell.querySelector("img")) {
+        const dot = document.createElement("img");
+        dot.src = dotimage;
+        dot.className = "dot";
+        cell.append(dot);
+      }
+    }
+    set(column, rowNumber - 1);
+    set(column, rowNumber + 1);
+    set(column - 1, rowNumber - 1);
+    set(column - 1, rowNumber);
+    set(column - 1, rowNumber + 1);
+    set(column + 1, rowNumber - 1);
+    set(column + 1, rowNumber);
+    set(column + 1, rowNumber + 1);
+  }
 }
 
 function displayPlayerBoard() {

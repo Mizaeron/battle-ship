@@ -25,9 +25,9 @@ export class Gameboard {
       const index = Gameboard.rowLetters.indexOf(k[0]);
       const letterBefore = Gameboard.rowLetters[index - 1];
       const letterAfter = Gameboard.rowLetters[index + 1];
-      const row = map.get(k[0]);
-      const rowBefore = map.get(letterBefore);
-      const rowAfter = map.get(letterAfter);
+      const col = map.get(k[0]);
+      const colBefore = map.get(letterBefore);
+      const colAfter = map.get(letterAfter);
 
       // helper to safely set if index in bounds and value is null (or absent)
       function safeSet(target, idx, val) {
@@ -37,21 +37,21 @@ export class Gameboard {
       }
 
       // current cell
-      if (row && k[1] >= 0 && k[1] < row.length) row[k[1]] = "X";
+      if (col && k[1] >= 0 && k[1] < col.length) col[k[1]] = "X";
 
-      // same row neighbors
-      safeSet(row, k[1] - 1, "C");
-      safeSet(row, k[1] + 1, "C");
+      // same col neighbors
+      safeSet(col, k[1] - 1, "C");
+      safeSet(col, k[1] + 1, "C");
 
-      // previous row neighbors
-      safeSet(rowBefore, k[1], "C");
-      safeSet(rowBefore, k[1] - 1, "C");
-      safeSet(rowBefore, k[1] + 1, "C");
+      // previous col neighbors
+      safeSet(colBefore, k[1], "C");
+      safeSet(colBefore, k[1] - 1, "C");
+      safeSet(colBefore, k[1] + 1, "C");
 
-      // next row neighbors
-      safeSet(rowAfter, k[1], "C");
-      safeSet(rowAfter, k[1] - 1, "C");
-      safeSet(rowAfter, k[1] + 1, "C");
+      // next col neighbors
+      safeSet(colAfter, k[1], "C");
+      safeSet(colAfter, k[1] - 1, "C");
+      safeSet(colAfter, k[1] + 1, "C");
     }
   }
 
