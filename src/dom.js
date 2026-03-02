@@ -191,6 +191,7 @@ function computerTurn() {
 
 function computerRandomAttack() {
   const colsArray = COL_LETTERS.split("");
+  let col, row;
 
   do {
     col = colsArray[Math.floor(Math.random() * colsArray.length)];
