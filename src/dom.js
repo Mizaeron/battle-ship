@@ -85,6 +85,7 @@ function sunkRadius(ship, cell, boards) {
         dot.src = dotimage;
         dot.className = "dot";
         target.append(dot);
+        boards.board.get(colIndexToLetter(col))[row] = "Radius";
       }
     }
     set(column, rowNumber - 1);
@@ -127,60 +128,80 @@ function displayComputerBoard() {
 displayPlayerBoard();
 displayComputerBoard();
 
-function playerAttack() {
-  const grid = document.querySelector(".computer-board");
+const computerGrid = document.querySelector(".computer-board");
+const playerGrid = document.querySelector(".player-board");
 
-  grid.addEventListener("click", (e) => {
-    const x = document.createElement("img");
-    x.src = cross;
-    const dot = document.createElement("img");
-    dot.src = dotimage;
-
-    if (e.target.className == "cell2") {
-      const column = colIndexToLetter(e.target.dataset.col);
-      const row = Number(e.target.dataset.row);
-
-      const ship = computerBoard.receiveAttack([column, row], computerBoard);
-      if (computerBoard.board.get(column)[row] === "Hit") {
-        x.className = "cross";
-        e.target.append(x);
-        if (ship.isSunk) sunkRadius(ship, "cell2", computerBoard);
-      } else if (computerBoard.board.get(column)[row] === "Miss") {
-        dot.className = "dot";
-        dot.style.backgroundColor = "#ccc";
-        e.target.append(dot);
-      }
-    }
-    if (computerBoard.areAllShipSunk(computerBoard.shipMap)) console.log("yes");
-  });
+function playerTurn() {
+  computerGrid.addEventListener("click", onPlayerClick);
 }
 
-function computerAttack() {
-  const grid = document.querySelector(".player-board");
+function onPlayerClick(e) {
+  const x = document.createElement("img");
+  x.src = cross;
+  x.className = "cross";
+  const dot = document.createElement("img");
+  dot.src = dotimage;
+  dot.className = "dot";
+  dot.style.backgroundColor = "#ccc";
 
-  grid.addEventListener("click", (e) => {
-    const x = document.createElement("img");
-    x.src = cross;
-    const dot = document.createElement("img");
-    dot.src = dotimage;
+  if (!e.target.classList.contains("cell2")) return;
+  if (e.target.querySelector(".cross") || e.target.querySelector(".dot"))
+    return;
+  const column = colIndexToLetter(e.target.dataset.col);
+  const row = Number(e.target.dataset.row);
 
-    if (e.target.className == "cell") {
-      const column = colIndexToLetter(e.target.dataset.col);
-      const row = Number(e.target.dataset.row);
+  const ship = computerBoard.receiveAttack([column, row], computerBoard);
+  if (computerBoard.board.get(column)[row] === "Hit") {
+    e.target.append(x);
+    if (ship.isSunk) sunkRadius(ship, "cell2", computerBoard);
+  } else if (computerBoard.board.get(column)[row] === "Miss") {
+    e.target.append(dot);
+  }
 
-      const ship = playerBoard.receiveAttack([column, row], playerBoard);
-      if (playerBoard.board.get(column)[row] === "Hit") {
-        x.className = "cross";
-        e.target.append(x);
-        if (ship.isSunk) sunkRadius(ship, "cell", playerBoard);
-      } else if (playerBoard.board.get(column)[row] === "Miss") {
-        dot.className = "dot";
-        dot.style.backgroundColor = "#ccc";
-        e.target.append(dot);
-      }
-    }
-    if (playerBoard.areAllShipSunk(playerBoard.shipMap)) console.log("yes");
-  });
+  if (computerBoard.areAllShipSunk(computerBoard.shipMap)) console.log("yes");
+  computerGrid.removeEventListener("click", onPlayerClick);
+  computerTurn();
 }
-playerAttack();
-computerAttack();
+
+function computerTurn() {
+  const x = document.createElement("img");
+  x.src = cross;
+  x.className = "cross";
+  const dot = document.createElement("img");
+  dot.src = dotimage;
+  dot.className = "dot";
+
+  const [col, row] = computerRandomAttack();
+  console.log(col, row);
+  const ship = playerBoard.receiveAttack([col, row], playerBoard);
+  const targets = document.querySelector(
+    `.cell[data-col="${letterToColIndex(col)}"][data-row="${row}"]`,
+  );
+  console.log("KUR CS REWARDAI NX");
+  if (playerBoard.board.get(col)[row] === "Hit") {
+    targets.append(x);
+    if (ship.isSunk) sunkRadius(ship, "cell", playerBoard);
+  } else if (playerBoard.board.get(col)[row] === "Miss") {
+    dot.style.backgroundColor = "#ccc";
+    targets.append(dot);
+  }
+  if (playerBoard.areAllShipSunk(playerBoard.shipMap)) console.log("yes");
+  playerTurn();
+}
+
+function computerRandomAttack() {
+  const colsArray = COL_LETTERS.split("");
+
+  do {
+    col = colsArray[Math.floor(Math.random() * colsArray.length)];
+    row = Math.floor(Math.random() * 10);
+  } while (
+    playerBoard.board.get(col)[row] === "Hit" ||
+    playerBoard.board.get(col)[row] === "Miss" ||
+    playerBoard.board.get(col)[row] === "Radius"
+  );
+
+  return [col, row];
+}
+
+playerTurn();
