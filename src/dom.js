@@ -49,29 +49,6 @@ function renderComputer() {
       grid.appendChild(cell);
     }
   }
-
-  grid.addEventListener("click", (e) => {
-    const x = document.createElement("img");
-    x.src = cross;
-    const dot = document.createElement("img");
-    dot.src = dotimage;
-
-    if (e.target.className == "cell2") {
-      const column = colIndexToLetter(e.target.dataset.col);
-      const row = Number(e.target.dataset.row);
-
-      const ship = computerBoard.receiveAttack([column, row], computerBoard);
-      if (computerBoard.board.get(column)[row] === "Hit") {
-        x.className = "cross";
-        e.target.append(x);
-        if (ship.isSunk) sunkRadius(ship);
-      } else if (computerBoard.board.get(column)[row] === "Miss") {
-        dot.className = "dot";
-        dot.style.backgroundColor = "#ccc";
-        e.target.append(dot);
-      }
-    }
-  });
 }
 
 renderPlayer();
@@ -85,10 +62,6 @@ function letterToColIndex(letter) {
   return COL_LETTERS.indexOf(letter.toUpperCase());
 }
 
-function rowIndexToDisplay(rowIndex) {
-  return rowIndex;
-}
-
 function getPlayerMap(index) {
   return playerBoard.board.get(colIndexToLetter(index));
 }
@@ -96,22 +69,22 @@ function getComputerMap(index) {
   return computerBoard.board.get(colIndexToLetter(index));
 }
 
-function sunkRadius(ship) {
+function sunkRadius(ship, cell, boards) {
   for (const k of ship.coords) {
     const column = letterToColIndex(k[0]);
     const rowNumber = k[1];
 
     function set(col, row) {
       if (col < 0) return;
-      const cell = document.querySelector(
-        `.cell2[data-col="${col}"][data-row="${row}"]`,
+      const target = document.querySelector(
+        `.${cell}[data-col="${col}"][data-row="${row}"]`,
       );
-      const boardCell = computerBoard.board.get(colIndexToLetter(col))[row];
-      if (boardCell === "C" && !cell.querySelector("img")) {
+      const boardCell = boards.board.get(colIndexToLetter(col))[row];
+      if (boardCell === "C" && !target.querySelector("img")) {
         const dot = document.createElement("img");
         dot.src = dotimage;
         dot.className = "dot";
-        cell.append(dot);
+        target.append(dot);
       }
     }
     set(column, rowNumber - 1);
@@ -153,3 +126,61 @@ function displayComputerBoard() {
 
 displayPlayerBoard();
 displayComputerBoard();
+
+function playerAttack() {
+  const grid = document.querySelector(".computer-board");
+
+  grid.addEventListener("click", (e) => {
+    const x = document.createElement("img");
+    x.src = cross;
+    const dot = document.createElement("img");
+    dot.src = dotimage;
+
+    if (e.target.className == "cell2") {
+      const column = colIndexToLetter(e.target.dataset.col);
+      const row = Number(e.target.dataset.row);
+
+      const ship = computerBoard.receiveAttack([column, row], computerBoard);
+      if (computerBoard.board.get(column)[row] === "Hit") {
+        x.className = "cross";
+        e.target.append(x);
+        if (ship.isSunk) sunkRadius(ship, "cell2", computerBoard);
+      } else if (computerBoard.board.get(column)[row] === "Miss") {
+        dot.className = "dot";
+        dot.style.backgroundColor = "#ccc";
+        e.target.append(dot);
+      }
+    }
+    if (computerBoard.areAllShipSunk(computerBoard.shipMap)) console.log("yes");
+  });
+}
+
+function computerAttack() {
+  const grid = document.querySelector(".player-board");
+
+  grid.addEventListener("click", (e) => {
+    const x = document.createElement("img");
+    x.src = cross;
+    const dot = document.createElement("img");
+    dot.src = dotimage;
+
+    if (e.target.className == "cell") {
+      const column = colIndexToLetter(e.target.dataset.col);
+      const row = Number(e.target.dataset.row);
+
+      const ship = playerBoard.receiveAttack([column, row], playerBoard);
+      if (playerBoard.board.get(column)[row] === "Hit") {
+        x.className = "cross";
+        e.target.append(x);
+        if (ship.isSunk) sunkRadius(ship, "cell", playerBoard);
+      } else if (playerBoard.board.get(column)[row] === "Miss") {
+        dot.className = "dot";
+        dot.style.backgroundColor = "#ccc";
+        e.target.append(dot);
+      }
+    }
+    if (playerBoard.areAllShipSunk(playerBoard.shipMap)) console.log("yes");
+  });
+}
+playerAttack();
+computerAttack();

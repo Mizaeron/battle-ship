@@ -33,9 +33,8 @@ body {
 
 .controllers {
   display: flex;
-  justify-content: space-between;
-  margin-left: 150px;
-  margin-right: 120px;
+  justify-content: center;
+  gap: 200px;
   font-size: 2.5rem;
   font-family: Impact;
   margin-bottom: 35px;
@@ -52,6 +51,7 @@ body {
   background-color: #ccc;
   padding: 15px;
   border-radius: 15px;
+  transform: translateX(50px);
 }
 
 .cell,
