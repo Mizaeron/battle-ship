@@ -38,6 +38,7 @@ body {
   font-size: 2.5rem;
   font-family: Impact;
   margin-bottom: 35px;
+  margin-top: 100px;
   font-weight: bold;
 }
 
@@ -81,4 +82,56 @@ body {
 .cross,
 .dot {
   max-width: 35px;
+}
+
+.place {
+  height: 40px;
+  border-radius: 15px;
+  padding: 10px;
+  margin-left: 170px;
+  margin-top: 20px;
+  background-color: rgb(29, 98, 224);
+  font-weight: bold;
+  color: white;
+}
+
+.place:hover {
+  background-color: rgb(29, 98, 224, 50%);
+  cursor: pointer;
+}
+
+.create-ship {
+  position: absolute;
+  top: 3%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  height: 150px;
+  width: 500px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px 0 #000;
+}
+
+.ship-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.ship-size {
+  flex: 0 1 100%;
+  text-align: center;
+}
+
+.submit-button {
+  flex: 0 1 60%;
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.submit-button:hover {
+  background-color: #ccc;
+  cursor: pointer;
 }

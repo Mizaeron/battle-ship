@@ -10,12 +10,22 @@ export function game() {}
 
 const COL_LETTERS = "ABCDEFGHIJ";
 
-const playerBoard = playerHuman();
+let playerBoard = playerHuman();
 const computerBoard = playerComputer();
 
 function renderPlayer() {
   const grid = document.querySelector(".player-board");
 
+  const corner = document.createElement("div");
+  corner.className = "label corner";
+  grid.append(corner);
+
+  for (let l = 0; l < 10; l++) {
+    const topL = document.createElement("div");
+    topL.className = "label";
+    topL.textContent = colIndexToLetter(l);
+    grid.append(topL);
+  }
   for (let r = 0; r < 10; r++) {
     const rl = document.createElement("div");
     rl.className = "label";
@@ -129,7 +139,6 @@ displayPlayerBoard();
 displayComputerBoard();
 
 const computerGrid = document.querySelector(".computer-board");
-const playerGrid = document.querySelector(".player-board");
 
 function playerTurn() {
   computerGrid.addEventListener("click", onPlayerClick);
@@ -158,7 +167,7 @@ function onPlayerClick(e) {
     e.target.append(dot);
   }
 
-  if (computerBoard.areAllShipSunk(computerBoard.shipMap)) console.log("yes");
+  if (computerBoard.areAllShipSunk(computerBoard.shipMap)) gameOver();
   computerGrid.removeEventListener("click", onPlayerClick);
   computerTurn();
 }
@@ -177,7 +186,6 @@ function computerTurn() {
   const targets = document.querySelector(
     `.cell[data-col="${letterToColIndex(col)}"][data-row="${row}"]`,
   );
-  console.log("KUR CS REWARDAI NX");
   if (playerBoard.board.get(col)[row] === "Hit") {
     targets.append(x);
     if (ship.isSunk) sunkRadius(ship, "cell", playerBoard);
@@ -185,7 +193,7 @@ function computerTurn() {
     dot.style.backgroundColor = "#ccc";
     targets.append(dot);
   }
-  if (playerBoard.areAllShipSunk(playerBoard.shipMap)) console.log("yes");
+  if (playerBoard.areAllShipSunk(playerBoard.shipMap)) gameOver();
   playerTurn();
 }
 
@@ -205,4 +213,91 @@ function computerRandomAttack() {
   return [col, row];
 }
 
+function createPlacement() {
+  const button = document.querySelector(".place");
+  const grid = document.querySelector(".player-board");
+
+  button.addEventListener("click", () => {
+    grid.textContent = "";
+    renderPlayer();
+    newPlayerBoard();
+  });
+}
+function gameOver() {
+  if (computerBoard.areAllShipSunk(computerBoard.shipMap)) alert("PLAYER WINS");
+  if (playerBoard.areAllShipSunk(playerBoard.shipMap)) alert("Computer Wins");
+}
+
 playerTurn();
+createPlacement();
+
+function newPlayerBoard() {
+  const createShip = document.querySelector(".create-ship");
+  const newPlayer = new Player();
+  playerBoard = newPlayer.createHuman();
+
+  // shipCreation(4);
+}
+
+function shipCreation(size) {
+  const form = document.querySelector(".ship-form");
+  const shipSize = document.querySelector(".ship-size");
+  shipSize.textContent = `Ship Size: ${size}`;
+  const button = document.createElement("button");
+  button.className = "submit-button";
+  button.textContent = "Submit";
+
+  for (let i = 0; i < size; i++) {
+    const letter = document.createElement("input");
+    letter.type = "text";
+    letter.id = `letter-${i}`;
+
+    const letterLabel = document.createElement("label");
+    letterLabel.className = "letter-label";
+    letterLabel.htmlFor = letter.id;
+    letterLabel.textContent = "Letter: ";
+
+    const number = document.createElement("input");
+    number.type = "number";
+    number.id = `number-${i}`;
+
+    const numberLabel = document.createElement("label");
+    numberLabel.className = "number-label";
+    numberLabel.htmlFor = number.id;
+    numberLabel.textContent = "Number: ";
+    numberLabel.ariaValueMax = 9;
+
+    letterLabel.append(letter);
+    form.append(letterLabel);
+    numberLabel.append(number);
+    form.append(numberLabel);
+  }
+
+  form.append(button);
+
+  button.addEventListener("click", (e) => {
+    const letterZero = document.querySelector("#letter-0");
+    const letterOne = document.querySelector("#letter-1");
+    const letterTwo = document.querySelector("#letter-2");
+    const letterThree = document.querySelector("#letter-3");
+
+    const idZero = document.querySelector("#number-0");
+    const idOne = document.querySelector("#number-1");
+    const idTwo = document.querySelector("#number-2");
+    const idThree = document.querySelector("#number-3");
+    e.preventDefault();
+
+    playerBoard.createShip(size);
+    if (letterZero && idZero) {
+      playerBoard.storedShip.assignCoords(
+        `${letterZero.value}`,
+        idZero.value,
+        playerBoard,
+      );
+    }
+    console.log(playerBoard.board);
+    displayPlayerBoard();
+  });
+}
+
+shipCreation(1);
