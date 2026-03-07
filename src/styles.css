@@ -111,6 +111,7 @@ body {
   border-radius: 5px;
   border: 1px solid #ccc;
   box-shadow: 0 0 10px 0 #000;
+  visibility: hidden;
 }
 
 .ship-form {

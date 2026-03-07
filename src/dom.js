@@ -213,6 +213,11 @@ function computerRandomAttack() {
   return [col, row];
 }
 
+function gameOver() {
+  if (computerBoard.areAllShipSunk(computerBoard.shipMap)) alert("PLAYER WINS");
+  if (playerBoard.areAllShipSunk(playerBoard.shipMap)) alert("Computer Wins");
+}
+
 function createPlacement() {
   const button = document.querySelector(".place");
   const grid = document.querySelector(".player-board");
@@ -223,81 +228,81 @@ function createPlacement() {
     newPlayerBoard();
   });
 }
-function gameOver() {
-  if (computerBoard.areAllShipSunk(computerBoard.shipMap)) alert("PLAYER WINS");
-  if (playerBoard.areAllShipSunk(playerBoard.shipMap)) alert("Computer Wins");
-}
-
 playerTurn();
 createPlacement();
 
-function newPlayerBoard() {
-  const createShip = document.querySelector(".create-ship");
+async function newPlayerBoard() {
   const newPlayer = new Player();
   playerBoard = newPlayer.createHuman();
 
-  // shipCreation(4);
+  await shipCreation(2);
+  await shipCreation(3);
 }
 
 function shipCreation(size) {
-  const form = document.querySelector(".ship-form");
-  const shipSize = document.querySelector(".ship-size");
-  shipSize.textContent = `Ship Size: ${size}`;
-  const button = document.createElement("button");
-  button.className = "submit-button";
-  button.textContent = "Submit";
+  return new Promise((resolve) => {
+    const form = document.querySelector(".ship-form");
+    const shipSize = document.querySelector(".ship-size");
+    const createShip = document.querySelector(".create-ship");
+    shipSize.textContent = `Ship Size: ${size}`;
+    const button = document.createElement("button");
+    button.className = "submit-button";
+    button.textContent = "Submit";
 
-  for (let i = 0; i < size; i++) {
-    const letter = document.createElement("input");
-    letter.type = "text";
-    letter.id = `letter-${i}`;
+    for (let i = 0; i < size; i++) {
+      const letter = document.createElement("input");
+      letter.type = "text";
+      letter.id = `letter-${i}`;
 
-    const letterLabel = document.createElement("label");
-    letterLabel.className = "letter-label";
-    letterLabel.htmlFor = letter.id;
-    letterLabel.textContent = "Letter: ";
+      const letterLabel = document.createElement("label");
+      letterLabel.className = "letter-label";
+      letterLabel.htmlFor = letter.id;
+      letterLabel.textContent = "Letter: ";
 
-    const number = document.createElement("input");
-    number.type = "number";
-    number.id = `number-${i}`;
+      const number = document.createElement("input");
+      number.type = "number";
+      number.id = `number-${i}`;
 
-    const numberLabel = document.createElement("label");
-    numberLabel.className = "number-label";
-    numberLabel.htmlFor = number.id;
-    numberLabel.textContent = "Number: ";
-    numberLabel.ariaValueMax = 9;
+      const numberLabel = document.createElement("label");
+      numberLabel.className = "number-label";
+      numberLabel.htmlFor = number.id;
+      numberLabel.textContent = "Number: ";
+      numberLabel.ariaValueMax = 9;
 
-    letterLabel.append(letter);
-    form.append(letterLabel);
-    numberLabel.append(number);
-    form.append(numberLabel);
-  }
-
-  form.append(button);
-
-  button.addEventListener("click", (e) => {
-    const letterZero = document.querySelector("#letter-0");
-    const letterOne = document.querySelector("#letter-1");
-    const letterTwo = document.querySelector("#letter-2");
-    const letterThree = document.querySelector("#letter-3");
-
-    const idZero = document.querySelector("#number-0");
-    const idOne = document.querySelector("#number-1");
-    const idTwo = document.querySelector("#number-2");
-    const idThree = document.querySelector("#number-3");
-    e.preventDefault();
-
-    playerBoard.createShip(size);
-    if (letterZero && idZero) {
-      playerBoard.storedShip.assignCoords(
-        `${letterZero.value}`,
-        idZero.value,
-        playerBoard,
-      );
+      letterLabel.append(letter);
+      form.append(letterLabel);
+      numberLabel.append(number);
+      form.append(numberLabel);
     }
-    console.log(playerBoard.board);
-    displayPlayerBoard();
+
+    form.append(button);
+    createShip.style.visibility = "visible";
+
+    const handler = (e) => {
+      e.preventDefault();
+      playerBoard.createShip(size);
+      for (let i = 0; i < size; i++) {
+        const letter = document.querySelector(`#letter-${i}`);
+        const number = document.querySelector(`#number-${i}`);
+        playerBoard.storedShip.assignCoords(
+          letter.value,
+          number.value,
+          playerBoard,
+        );
+      }
+
+      displayPlayerBoard();
+      // clean up created inputs/buttons so next call starts fresh
+      const inputs = form.querySelectorAll(
+        ".letter-label, .number-label, .submit-button",
+      );
+      inputs.forEach((n) => n.remove());
+      createShip.style.visibility = "hidden";
+
+      button.removeEventListener("click", handler);
+      resolve();
+    };
+
+    button.addEventListener("click", handler);
   });
 }
-
-shipCreation(1);
