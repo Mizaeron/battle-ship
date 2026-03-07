@@ -232,11 +232,21 @@ playerTurn();
 createPlacement();
 
 async function newPlayerBoard() {
+  const shipForm = document.querySelector(".create-ship");
   const newPlayer = new Player();
   playerBoard = newPlayer.createHuman();
 
-  await shipCreation(2);
+  await shipCreation(4);
   await shipCreation(3);
+  await shipCreation(3);
+  await shipCreation(2);
+  await shipCreation(2);
+  await shipCreation(2);
+  await shipCreation(1);
+  await shipCreation(1);
+  await shipCreation(1);
+  await shipCreation(1);
+  shipForm.style.visibility = "hidden";
 }
 
 function shipCreation(size) {
